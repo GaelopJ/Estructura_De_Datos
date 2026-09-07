@@ -17,11 +17,11 @@ public class PrecesadorDeCSV {
 
             while ((lineaALeer = br.readLine()) != null){
 
-                String[] palabra = lineaALeer.split(",");
+                String[] palabras = lineaALeer.split(",");
                 ArrayList<String> fila = new ArrayList<>();
 
-                for (int i =0; i< palabra.length;i++){
-                    fila.add(palabra[i]);
+                for (int i =0; i< palabras.length;i++){
+                    fila.add(palabras[i]);
                 }
                 tablaDeContenido.add(fila);
             }

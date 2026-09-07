@@ -8,6 +8,8 @@ public class Main {
         int seleccion = 0;
         String opciones[] = {"Nomina", "trabajador con mayor antigüedad", "trabajador con menor antigüedad"};
 
+        System.out.println("-------MENÜ--------");
+
         for (int i = 0; i < opciones.length; i++) {
             System.out.println("[" + (i + 1) + "]" + opciones[i]);
         }
