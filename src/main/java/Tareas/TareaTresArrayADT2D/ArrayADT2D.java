@@ -1,16 +1,30 @@
 package Tareas.TareaTresArrayADT2D;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class ArrayADT2D<T> {
     private int renglones;
     private int columnas;
-    private Object[][] datos;
+    private ArrayList<ArrayList<T>> datos;
+
+    public ArrayADT2D() {
+        this.renglones = 0;
+        this.columnas = 0;
+        this.datos = new ArrayList<>();
+    }
 
     public ArrayADT2D(int renglones, int columnas) {
         this.renglones = renglones;
         this.columnas = columnas;
-        this.datos = new Object[renglones][columnas];
+        this.datos = new ArrayList<>(renglones);
+
+        for (int i = 0; i < renglones; i++) {
+            ArrayList<T> fila = new ArrayList<>(columnas);
+            for (int j = 0; j < columnas; j++) {
+                fila.add(null);
+            }
+            this.datos.add(fila);
+        }
     }
 
     @Override
@@ -18,9 +32,10 @@ public class ArrayADT2D<T> {
         return "ArrayADT2D{" +
                 "renglones=" + renglones +
                 ", columnas=" + columnas +
-                ", datos=" + Arrays.deepToString(datos) +
+                ", datos=" + datos +
                 '}';
     }
+
 
     public int obtenerRenglones() {
         return this.renglones;
@@ -31,21 +46,50 @@ public class ArrayADT2D<T> {
     }
 
     public void establecerElemento(int ren, int col, T dato) {
-        validarTamanio(ren, col);
-        datos[ren][col] = dato;
+        asegurarCapacidad(ren, col);
+        datos.get(ren).set(col, dato);
+    }
+
+    private void asegurarCapacidad(int ren, int col) {
+        while (ren >= renglones) {
+            datos.add(new ArrayList<>());
+            renglones++;
+        }
+
+        if (col >= columnas) {
+            columnas = col + 1;
+        }
+
+        for (int i = 0; i < renglones; i++) {
+            ArrayList<T> fila = datos.get(i);
+            while (fila.size() < columnas) {
+                fila.add(null);
+            }
+        }
     }
 
     public void rellenar(T dato) {
         for (int i = 0; i < renglones; i++) {
             for (int j = 0; j < columnas; j++) {
-                datos[i][j] = dato;
+                datos.get(i).set(j, dato);
             }
         }
     }
 
     public T obtenerElemento(int ren, int col) {
         validarTamanio(ren, col);
-        return (T) datos[ren][col];
+        return datos.get(ren).get(col);
+    }
+
+    public int[] obtenerCoordenadas(T dato) {
+        for (int i = 0; i < renglones; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (dato.equals(datos.get(i).get(j))) {
+                    return new int[]{i, j};
+                }
+            }
+        }
+        return null;
     }
 
     private void validarTamanio(int ren, int col) {
@@ -60,10 +104,9 @@ public class ArrayADT2D<T> {
     public void imprimir() {
         for (int i = 0; i < renglones; i++) {
             for (int j = 0; j < columnas; j++) {
-                System.out.println(datos[i][j]);
+                System.out.print(datos.get(i).get(j) + "\t");
             }
-
+            System.out.println();
         }
     }
 }
-
